@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>齐旭飞 - 个人简历</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar {
+  background-color: #1e1e1e;
+  padding: 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar h1 { color: #fff; font-size: 1.5rem; }
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+.nav-links a {
+  color: #888;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: #fff; }
+
+.header {
+  background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.header h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+.header p { color: #aaa; margin-bottom: 0.5rem; }
+.contact-info {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  color: #999;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.section {
+  background: #1e1e1e;
+  padding: 2rem;
+  border-radius: 14px;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+.section-title {
+  font-size: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #007bff;
+  margin-bottom: 1.5rem;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.skill-tag {
+  background: #2d2d2d;
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  transition: 0.3s;
+}
+.skill-tag:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.job-item { margin-bottom: 1.5rem; }
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+footer {
+  background: #1e1e1e;
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  .navbar { flex-direction: column; gap: 1rem; }
+  .nav-links { flex-wrap: wrap; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <h1>Personal Resume</h1>
+  <ul class="nav-links">
+    <li><a href="#about">关于我</a></li>
+    <li><a href="#education">教育经历</a></li>
+    <li><a href="#skills">专业技能</a></li>
+    <li><a href="#experience">工作经历</a></li>
+    <li><a href="#contact">联系我</a></li>
+  </ul>
+</div>
+
+<div class="header fade-in" id="about">
+  <h2 id="showName">齐旭飞</h2>
+  <p id="showTitle">建设工程管理 | 室内设计 | 复合型核心人才</p>
+  <div class="contact-info">
+    <span id="showPhone">📞 15301028262</span>
+    <span id="showEmail">📧 1972665437@qq.com</span>
+    <span id="showAddress">📍 山西吕梁</span>
+  </div>
+</div>
+
+<div class="container">
+  <section id="education" class="section fade-in">
+    <div class="section-title">教育经历</div>
+    <div id="eduContent"></div>
+  </section>
+
+  <section id="skills" class="section fade-in">
+    <div class="section-title">掌握技能</div>
+    <div id="skillContent" class="skill-list"></div>
+  </section>
+
+  <section id="experience" class="section fade-in">
+    <div class="section-title">工作经历</div>
+    <div id="expContent"></div>
+  </section>
+
+  <section class="section fade-in">
+    <div class="section-title">自我评价</div>
+    <div id="selfContent"></div>
+  </section>
+</div>
+
+<footer id="contact">
+  <p>© 2026 <span id="footName">齐旭飞</span> | 个人简历</p>
+  <p><span id="footPhone">15301028262</span> | <span id="footEmail">1972665437@qq.com</span></p>
+</footer>
+
+<script>
+// 淡入
+const els = document.querySelectorAll('.fade-in');
+const ob = new IntersectionObserver(es => {
+  es.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
+}, { threshold: 0.1 });
+els.forEach(e => ob.observe(e));
+
+// 默认数据
+const defaultData = {
+  name: "齐旭飞",
+  title: "建设工程管理 | 室内设计 | 复合型核心人才",
+  phone: "15301028262",
+  email: "1972665437@qq.com",
+  address: "山西吕梁",
+
+  edu: `<h4>国家大学 | 建设工程管理 | 大学专科</h4>
+<p>2019.03 - 2021.07</p>
+<p>主修：建筑制图基础、建筑材料、建筑构造、建筑力学、管理学基础、建筑测量、建筑法规、建筑工程项目管理等。</p>`,
+
+  skill: `<span class="skill-tag">天正建筑</span>
+<span class="skill-tag">AutoCAD</span>
+<span class="skill-tag">Photoshop</span>
+<span class="skill-tag">3ds Max</span>
+<span class="skill-tag">Premiere</span>
+<span class="skill-tag">WPS Office</span>
+<span class="skill-tag">Word</span>
+<span class="skill-tag">PPT</span>
+<span class="skill-tag">网址搭建</span>`,
+
+  exp: `<div class="job-item">
+<div class="job-header">
+  <h4>天通银厦新材料有限公司 | 技术质检员</h4>
+  <span>2024.05 - 2025.10</span>
+</div>
+<ul>
+  <li>记录与报告：整理归档记录500+份，及时反馈和解决质量问题30+起，有效降低产品返工率15%。</li>
+  <li>来料和成品检验：执行全检/抽检1000+批次，检验数据准确率98.68%。</li>
+</ul>
+</div>
+<div class="job-item">
+<div class="job-header">
+  <h4>山西晋中建筑景观设计有限公司 | 设计师助理</h4>
+  <span>2021.05 - 2023.07</span>
+</div>
+<ul>
+  <li>项目前期初步设计协助：参与10+个项目初步设计讨论，提出建设性建议20+条。</li>
+  <li>酒店项目设计与施工图修改：深化优化方案，独立完成施工图。</li>
+</ul>
+</div>`,
+
+  self: `<p>拥有3年建筑设计助理与1年质检技术从业经验，精通建筑工程（家装、工装）全流程设计体系，可实现方案创意与施工落地的高效平衡。</p>`
+};
+
+function loadAll() {
+  // 个人信息
+  const name = localStorage.getItem('info_name') || defaultData.name;
+  const title = localStorage.getItem('info_title') || defaultData.title;
+  const phone = localStorage.getItem('info_phone') || defaultData.phone;
+  const email = localStorage.getItem('info_email') || defaultData.email;
+  const address = localStorage.getItem('info_address') || defaultData.address;
+
+  document.getElementById('showName').innerText = name;
+  document.getElementById('showTitle').innerText = title;
+  document.getElementById('showPhone').innerText = '📞 ' + phone;
+  document.getElementById('showEmail').innerText = '📧 ' + email;
+  document.getElementById('showAddress').innerText = '📍 ' + address;
+  document.getElementById('footName').innerText = name;
+  document.getElementById('footPhone').innerText = phone;
+  document.getElementById('footEmail').innerText = email;
+
+  // 其他内容
+  document.getElementById('eduContent').innerHTML = localStorage.getItem('eduText') || defaultData.edu;
+  document.getElementById('skillContent').innerHTML = localStorage.getItem('skillText') || defaultData.skill;
+  document.getElementById('expContent').innerHTML = localStorage.getItem('expText') || defaultData.exp;
+  document.getElementById('selfContent').innerHTML = localStorage.getItem('selfText') || defaultData.self;
+}
+
+window.addEventListener('DOMContentLoaded', loadAll);
+</script>
+</body>
+</html>
