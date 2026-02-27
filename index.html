@@ -177,14 +177,12 @@ footer {
 </footer>
 
 <script>
-// 淡入
 const els = document.querySelectorAll('.fade-in');
 const ob = new IntersectionObserver(es => {
   es.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
 }, { threshold: 0.1 });
 els.forEach(e => ob.observe(e));
 
-// 默认数据
 const defaultData = {
   name: "齐旭飞",
   title: "建设工程管理 | 室内设计 | 复合型核心人才",
@@ -202,8 +200,6 @@ const defaultData = {
 <span class="skill-tag">3ds Max</span>
 <span class="skill-tag">Premiere</span>
 <span class="skill-tag">WPS Office</span>
-<span class="skill-tag">Word</span>
-<span class="skill-tag">PPT</span>
 <span class="skill-tag">网址搭建</span>`,
 
   exp: `<div class="job-item">
@@ -231,7 +227,6 @@ const defaultData = {
 };
 
 function loadAll() {
-  // 个人信息
   const name = localStorage.getItem('info_name') || defaultData.name;
   const title = localStorage.getItem('info_title') || defaultData.title;
   const phone = localStorage.getItem('info_phone') || defaultData.phone;
@@ -247,7 +242,6 @@ function loadAll() {
   document.getElementById('footPhone').innerText = phone;
   document.getElementById('footEmail').innerText = email;
 
-  // 其他内容
   document.getElementById('eduContent').innerHTML = localStorage.getItem('eduText') || defaultData.edu;
   document.getElementById('skillContent').innerHTML = localStorage.getItem('skillText') || defaultData.skill;
   document.getElementById('expContent').innerHTML = localStorage.getItem('expText') || defaultData.exp;
