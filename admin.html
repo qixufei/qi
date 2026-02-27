@@ -17,7 +17,17 @@ input,textarea,button{border:none;outline:none;border-radius:8px}
 .form-item{margin-bottom:20px}
 .form-item input,.form-item textarea{width:100%;padding:16px;background:#2d2d2d;color:#fff;font-size:16px}
 .form-item input{height:54px}
-.form-item textarea{resize:vertical;min-height:420px;font-size:16px;line-height:1.7}
+
+.form-item textarea{
+  resize:none;
+  width:100%;
+  height: calc(100vh - 220px);
+  font-size:16px;
+  line-height:1.7;
+  padding:20px;
+  background:#2d2d2d;
+  color:#fff;
+}
 
 .btn{width:100%;padding:18px;border-radius:8px;background:#007bff;color:#fff;font-weight:600;cursor:pointer;margin-top:10px;font-size:16px}
 .btn-sm{padding:8px 14px;border-radius:6px;background:#007bff;color:#fff;margin:0 6px;cursor:pointer}
@@ -31,9 +41,19 @@ input,textarea,button{border:none;outline:none;border-radius:8px}
 .sidebar li{padding:16px 20px;cursor:pointer;border-radius:8px;margin:6px 12px;display:flex;align-items:center;gap:10px;font-size:16px}
 .sidebar li:hover,.sidebar li.active{background:#2d2d2d}
 
-.main{flex:1;padding:40px;overflow-y:auto}
-.card{background:#1e1e1e;border-radius:16px;padding:50px;margin-bottom:30px;box-shadow:0 4px 20px rgba(0,0,0,0.2);max-width:1200px;margin-left:auto;margin-right:auto}
-.card h3{margin-bottom:30px;color:#007bff;font-size:24px}
+.main{flex:1;padding:0;overflow:hidden}
+
+.card{
+  background:#1e1e1e;
+  border-radius:0;
+  padding:20px;
+  margin:0;
+  width:100%;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+.card h3{margin-bottom:16px;color:#007bff;font-size:24px}
 </style>
 </head>
 
@@ -96,14 +116,16 @@ input,textarea,button{border:none;outline:none;border-radius:8px}
           <div class="form-item">
             <input v-model="info_address" placeholder="地址">
           </div>
-          <button class="btn" @click="saveInfo">保存个人信息</button>
+          <button class="btn" @click="saveAll">保存并同步所有模块</button>
         </div>
       </div>
 
       <div v-if="page=='edu'">
         <div class="card">
           <h3>编辑教育经历</h3>
-          <textarea v-model="eduText"></textarea>
+          <div class="form-item">
+            <textarea v-model="eduText"></textarea>
+          </div>
           <button class="btn" @click="saveEdu">保存</button>
         </div>
       </div>
@@ -111,7 +133,9 @@ input,textarea,button{border:none;outline:none;border-radius:8px}
       <div v-if="page=='skill'">
         <div class="card">
           <h3>编辑专业技能</h3>
-          <textarea v-model="skillText"></textarea>
+          <div class="form-item">
+            <textarea v-model="skillText"></textarea>
+          </div>
           <button class="btn" @click="saveSkill">保存</button>
         </div>
       </div>
@@ -119,7 +143,9 @@ input,textarea,button{border:none;outline:none;border-radius:8px}
       <div v-if="page=='exp'">
         <div class="card">
           <h3>编辑工作经历</h3>
-          <textarea v-model="expText"></textarea>
+          <div class="form-item">
+            <textarea v-model="expText"></textarea>
+          </div>
           <button class="btn" @click="saveExp">保存</button>
         </div>
       </div>
@@ -127,7 +153,9 @@ input,textarea,button{border:none;outline:none;border-radius:8px}
       <div v-if="page=='self'">
         <div class="card">
           <h3>编辑自我评价</h3>
-          <textarea v-model="selfText"></textarea>
+          <div class="form-item">
+            <textarea v-model="selfText"></textarea>
+          </div>
           <button class="btn" @click="saveSelf">保存</button>
         </div>
       </div>
@@ -144,50 +172,71 @@ createApp({
       user:'',
       pwd:'',
       page:'info',
+
       info_name:'',
       info_title:'',
       info_phone:'',
       info_email:'',
       info_address:'',
+
       eduText:'',
       skillText:'',
       expText:'',
       selfText:''
     }
   },
+  mounted(){
+    this.loadData();
+  },
   methods:{
     login(){
-      if(this.user==='admin'&&this.pwd==='123456'){
-        this.logged=true
-        this.load()
-      }else{
-        alert('账号或密码错误')
+      if(this.user === 'admin' && this.pwd === '123456'){
+        this.logged = true;
+        this.loadData();
+      } else {
+        alert('账号或密码错误');
       }
     },
-    logout(){ this.logged=false },
-    saveInfo(){
-      localStorage.setItem('info_name',this.info_name)
-      localStorage.setItem('info_title',this.info_title)
-      localStorage.setItem('info_phone',this.info_phone)
-      localStorage.setItem('info_email',this.info_email)
-      localStorage.setItem('info_address',this.info_address)
-      alert('个人信息保存成功！')
+    logout(){
+      this.logged = false;
     },
-    saveEdu(){ localStorage.setItem('eduText',this.eduText); alert('保存成功') },
-    saveSkill(){ localStorage.setItem('skillText',this.skillText); alert('保存成功') },
-    saveExp(){ localStorage.setItem('expText',this.expText); alert('保存成功') },
-    saveSelf(){ localStorage.setItem('selfText',this.selfText); alert('保存成功') },
-    load(){
-      this.info_name = localStorage.getItem('info_name') || '齐旭飞'
-      this.info_title = localStorage.getItem('info_title') || '建设工程管理 | 室内设计 | 复合型核心人才'
-      this.info_phone = localStorage.getItem('info_phone') || '15301028262'
-      this.info_email = localStorage.getItem('info_email') || '1972665437@qq.com'
-      this.info_address = localStorage.getItem('info_address') || '山西吕梁'
+    loadData(){
+      this.info_name = localStorage.getItem('info_name') || '';
+      this.info_title = localStorage.getItem('info_title') || '';
+      this.info_phone = localStorage.getItem('info_phone') || '';
+      this.info_email = localStorage.getItem('info_email') || '';
+      this.info_address = localStorage.getItem('info_address') || '';
 
-      this.eduText = localStorage.getItem('eduText') || ''
-      this.skillText = localStorage.getItem('skillText') || ''
-      this.expText = localStorage.getItem('expText') || ''
-      this.selfText = localStorage.getItem('selfText') || ''
+      this.eduText = localStorage.getItem('eduText') || '';
+      this.skillText = localStorage.getItem('skillText') || '';
+      this.expText = localStorage.getItem('expText') || '';
+      this.selfText = localStorage.getItem('selfText') || '';
+    },
+
+    saveAll(){
+      localStorage.setItem('info_name', this.info_name || '齐旭飞');
+      localStorage.setItem('info_title', this.info_title || '建设工程管理 | 室内设计 | 复合型核心人才');
+      localStorage.setItem('info_phone', this.info_phone || '15301028262');
+      localStorage.setItem('info_email', this.info_email || '1972665437@qq.com');
+      localStorage.setItem('info_address', this.info_address || '山西吕梁');
+      alert('个人信息保存成功！');
+    },
+
+    saveEdu(){
+      localStorage.setItem('eduText', this.eduText);
+      alert('教育经历保存成功！');
+    },
+    saveSkill(){
+      localStorage.setItem('skillText', this.skillText);
+      alert('技能保存成功！');
+    },
+    saveExp(){
+      localStorage.setItem('expText', this.expText);
+      alert('工作经历保存成功！');
+    },
+    saveSelf(){
+      localStorage.setItem('selfText', this.selfText);
+      alert('自我评价保存成功！');
     }
   }
 }).mount('#app')
